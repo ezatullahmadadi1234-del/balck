@@ -1,16 +1,102 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Terminal</title>
+
 <style>
-html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    background: black;
-}
+    body {
+        margin: 0;
+        background: black;
+        color: #00ff00;
+        font-family: monospace;
+        overflow: hidden;
+        font-size: 16px;
+    }
+
+    #terminal {
+        padding: 20px;
+        white-space: pre-wrap;
+    }
+
+    .warning {
+        color: red;
+        font-size: 22px;
+        font-weight: bold;
+    }
 </style>
 </head>
+
 <body>
+
+<div id="terminal"></div>
+
+<script>
+const lines = [
+    "SYSTEM INITIALIZING...",
+    "Connecting to secure server...",
+    "Connection established.",
+    "Scanning network...",
+    "████████████████████ 100%",
+    "Accessing system...",
+    "Checking security protocols...",
+    "Bypassing firewall...",
+    "Decrypting data...",
+    "████████████████████ 100%",
+    "Loading system files...",
+    "Searching for vulnerabilities...",
+    "ACCESS GRANTED",
+    "",
+    "WARNING: SYSTEM COMPROMISED",
+    "Initializing terminal...",
+    ""
+];
+
+let i = 0;
+const terminal = document.getElementById("terminal");
+
+function typeLine() {
+    if (i < lines.length) {
+        const line = document.createElement("div");
+
+        if (lines[i].includes("WARNING")) {
+            line.className = "warning";
+        }
+
+        terminal.appendChild(line);
+
+        let text = lines[i];
+        let j = 0;
+
+        const typing = setInterval(() => {
+            line.textContent += text[j];
+            j++;
+
+            if (j >= text.length) {
+                clearInterval(typing);
+                i++;
+                setTimeout(typeLine, 300);
+            }
+        }, 25);
+    } else {
+        setInterval(() => {
+            const extra = document.createElement("div");
+            extra.textContent =
+                "[SYSTEM] " +
+                Math.random().toString(16).substring(2, 12) +
+                "  PROCESS RUNNING...";
+            terminal.appendChild(extra);
+
+            if (terminal.children.length > 25) {
+                terminal.removeChild(terminal.firstChild);
+            }
+        }, 700);
+    }
+}
+
+typeLine();
+</script>
+
 </body>
 </html>
